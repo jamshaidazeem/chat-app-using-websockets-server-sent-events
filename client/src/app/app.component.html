@@ -1,0 +1,8 @@
+<div
+  *ngIf="showUserInfoForm"
+  class="flex w-1/3 h-fit justify-center items-center"
+>
+  <app-user-info
+    (onUserInfoSubmittedEvent)="onUserInfoSubmitted($event)"
+  ></app-user-info>
+</div>
