@@ -4,7 +4,10 @@ import { Component } from '@angular/core';
   selector: 'app-chat',
   standalone: true,
   imports: [],
-  template: ` <ng-content [select]="chatHeader"></ng-content> `,
+  template: `
+    <ng-content [select]="chatHeader"></ng-content>
+    <ng-content [select]="chatMessages"></ng-content>
+  `,
   styles: [
     `
       :host {

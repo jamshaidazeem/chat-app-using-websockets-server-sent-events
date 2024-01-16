@@ -5,6 +5,7 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import { initFlowbite } from 'flowbite';
 import { ChatComponent } from './chat/chat.component';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
+import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { ChatHeaderComponent } from './chat-header/chat-header.component';
     UserInfoComponent,
     ChatComponent,
     ChatHeaderComponent,
+    ChatMessagesComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -25,6 +27,35 @@ export class AppComponent implements OnInit {
 
   userInfo: any = { username: '', profileImg: null };
   notificationCount: number = 5;
+
+  messageDate = new Date().toUTCString();
+
+  messages: any[] = [
+    {
+      name: 'JamshaidAzeem',
+      dateTime: this.messageDate,
+      content: 'Hello, how are you?',
+      profile: 'assets/profile-picture-2.jpeg',
+    },
+    {
+      name: 'UsmanKhan',
+      dateTime: this.messageDate,
+      content: 'Hi, i am fine?',
+      profile: 'assets/profile-picture-1.jpg',
+    },
+    {
+      name: 'JamshaidAzeem',
+      dateTime: this.messageDate,
+      content: 'Any updates regarding project?',
+      profile: 'assets/profile-picture-2.jpeg',
+    },
+    {
+      name: 'UsmanKhan',
+      dateTime: this.messageDate,
+      content: 'Yes, project details are ready, we can start development',
+      profile: 'assets/profile-picture-1.jpg',
+    },
+  ];
 
   ngOnInit(): void {
     initFlowbite();

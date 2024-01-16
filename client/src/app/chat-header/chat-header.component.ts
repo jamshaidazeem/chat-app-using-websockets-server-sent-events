@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ChatNotificationComponent } from '../chat-notification/chat-notification';
+import { ChatNotificationComponent } from '../chat-notification/chat-notification.component';
 
 @Component({
   selector: 'app-chat-header',
