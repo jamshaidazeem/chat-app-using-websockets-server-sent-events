@@ -1,10 +1,10 @@
 <form
   class="flex flex-col w-full h-full justify-start items-stretch"
   (ngSubmit)="onClickSubmit()"
-  [noValidate]="false"
+  ngNativeValidate
 >
   <!-- (ngSubmit)="onClickSubmit()" added to prevent form submission on submit && to enable ngModel binding -->
-  <!-- [noValidate]="false" added so tailwind default validations could work 
+  <!-- ngNativeValidate added so tailwind default validations could work 
     because ngSubmit by default adds noValidate class to prevent default html 
     validation which are required for tailwind to work -->
 

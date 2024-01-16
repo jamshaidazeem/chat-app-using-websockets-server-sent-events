@@ -3,11 +3,19 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserInfoComponent } from './user-info/user-info.component';
 import { initFlowbite } from 'flowbite';
+import { ChatComponent } from './chat/chat.component';
+import { ChatHeaderComponent } from './chat-header/chat-header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, UserInfoComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    UserInfoComponent,
+    ChatComponent,
+    ChatHeaderComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
@@ -16,6 +24,7 @@ export class AppComponent implements OnInit {
   showUserInfoForm: boolean = true;
 
   userInfo: any = { username: '', profileImg: null };
+  notificationCount: number = 5;
 
   ngOnInit(): void {
     initFlowbite();

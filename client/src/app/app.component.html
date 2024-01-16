@@ -1,8 +1,19 @@
 <div
-  *ngIf="showUserInfoForm"
+  *ngIf="showUserInfoForm; else chat"
   class="flex w-1/3 h-fit justify-center items-center"
 >
   <app-user-info
     (onUserInfoSubmittedEvent)="onUserInfoSubmitted($event)"
   ></app-user-info>
 </div>
+<ng-template #chat>
+  <div class="flex w-1/3 h-fit justify-center items-center">
+    <app-chat>
+      <app-chat-header
+        chatHeader
+        [name]="userInfo.username"
+        [profile]="userInfo.profile"
+        [notificationCount]="notificationCount"
+      ></app-chat-header>
+    </app-chat></div
+></ng-template>
