@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+// ref:- https://angular.io/guide/content-projection
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
   template: `
     <ng-content [select]="chatHeader"></ng-content>
     <ng-content [select]="chatMessages"></ng-content>
+    <ng-content [select]="chatSend"></ng-content>
   `,
   styles: [
     `

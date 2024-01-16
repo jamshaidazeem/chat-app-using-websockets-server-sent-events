@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-
+// ref:- https://flowbite.com/docs/components/chat-bubble/#outline-chat-bubble
 @Component({
   selector: 'app-chat-message',
   standalone: true,

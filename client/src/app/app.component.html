@@ -20,5 +20,9 @@
         [messages]="messages"
         class="hide-scrollbar"
       ></app-chat-messages>
+      <app-chat-send
+        chatSend
+        (onSendMessageEvent)="onChatMessageSubmitted($event)"
+      ></app-chat-send>
     </app-chat></div
 ></ng-template>

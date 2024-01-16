@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-
+// ref:- https://flowbite.com/docs/components/badge/#notification-badge
 @Component({
   selector: 'app-chat-notification',
   standalone: true,

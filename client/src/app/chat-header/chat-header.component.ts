@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ChatNotificationComponent } from '../chat-notification/chat-notification.component';
-
+// ref:- https://flowbite.com/docs/components/avatar/
 @Component({
   selector: 'app-chat-header',
   standalone: true,
@@ -19,7 +19,7 @@ import { ChatNotificationComponent } from '../chat-notification/chat-notificatio
   styles: [
     `
       :host {
-        @apply flex flex-row w-full h-20 bg-slate-200 justify-start items-center;
+        @apply flex flex-row w-full h-20 rounded-lg bg-gray-50 dark:bg-gray-700 justify-start items-center;
         .container-profile {
           @apply flex w-1/5 h-full justify-center items-center;
         }

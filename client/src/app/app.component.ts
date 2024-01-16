@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserInfoComponent } from './user-info/user-info.component';
-import { initFlowbite } from 'flowbite';
 import { ChatComponent } from './chat/chat.component';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
 import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
+import { ChatSendComponent } from './chat-send/chat-send.component';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
     ChatComponent,
     ChatHeaderComponent,
     ChatMessagesComponent,
+    ChatSendComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
@@ -65,4 +67,6 @@ export class AppComponent implements OnInit {
     this.userInfo = event;
     this.showUserInfoForm = false;
   }
+
+  onChatMessageSubmitted(message: string) {}
 }
