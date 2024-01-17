@@ -8,11 +8,20 @@ const wss = new WebSocket.Server({ port: PORT });
 wss.on("connection", (ws) => {
   console.log("client connected");
 
-  console.log("🚀 ~ wss.on ~ ws:", ws);
-
   ws.on("message", (message) => {
     const newMessageFromClient = JSON.parse(message);
-    console.log("🚀 ~ ws.on ~ newMessageFromClient:", newMessageFromClient);
+    // sending to all clients including the sender
+    wss.clients.forEach(function each(client) {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(newMessageFromClient));
+      }
+    });
+    /* sending to all clients excluding the sender
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify(newMessageFromClient));
+      }
+    }); */
   });
 
   ws.on("close", () => {

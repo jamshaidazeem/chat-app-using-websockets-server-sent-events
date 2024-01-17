@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { UserInfoComponent } from './user-info/user-info.component';
@@ -7,6 +8,9 @@ import { ChatHeaderComponent } from './chat-header/chat-header.component';
 import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
 import { ChatSendComponent } from './chat-send/chat-send.component';
 import { initFlowbite } from 'flowbite';
+import { catchError, retry, throwError } from 'rxjs';
+import { WebSocketService } from './web-socket.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-root',
@@ -32,32 +36,25 @@ export class AppComponent implements OnInit {
 
   messageDate = new Date().toUTCString();
 
-  messages: any[] = [
-    {
-      name: 'JamshaidAzeem',
-      dateTime: this.messageDate,
-      content: 'Hello, how are you?',
-      profile: 'assets/profile-picture-2.jpeg',
-    },
-    {
-      name: 'UsmanKhan',
-      dateTime: this.messageDate,
-      content: 'Hi, i am fine?',
-      profile: 'assets/profile-picture-1.jpg',
-    },
-    {
-      name: 'JamshaidAzeem',
-      dateTime: this.messageDate,
-      content: 'Any updates regarding project?',
-      profile: 'assets/profile-picture-2.jpeg',
-    },
-    {
-      name: 'UsmanKhan',
-      dateTime: this.messageDate,
-      content: 'Yes, project details are ready, we can start development',
-      profile: 'assets/profile-picture-1.jpg',
-    },
-  ];
+  messages: any[] = [];
+
+  constructor(
+    private webSocketService: WebSocketService,
+    private deviceService: DeviceDetectorService
+  ) {
+    // subscribe to messages
+    this.webSocketService.webSocket$
+      .pipe(
+        catchError((err) => {
+          return throwError(() => new Error(err));
+        }),
+        retry({ delay: 5_000 }),
+        takeUntilDestroyed()
+      )
+      .subscribe((value: any) => {
+        this.messages.push(JSON.parse(value));
+      });
+  }
 
   ngOnInit(): void {
     initFlowbite();
@@ -68,5 +65,21 @@ export class AppComponent implements OnInit {
     this.showUserInfoForm = false;
   }
 
-  onChatMessageSubmitted(message: string) {}
+  get sentMessageDate() {
+    return new Date().toUTCString();
+  }
+
+  get browserName() {
+    return this.deviceService.browser.toLowerCase();
+  }
+
+  onChatMessageSubmitted(message: string) {
+    const messageBody = {
+      name: this.userInfo.username,
+      dateTime: this.sentMessageDate,
+      content: message,
+      profile: `assets/chat-avatar-${this.browserName}.jpg`,
+    };
+    this.webSocketService.sendMessageToWebSocketServer(messageBody);
+  }
 }
