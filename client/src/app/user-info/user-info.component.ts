@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { IUser, createIUser } from '../models/user';
 // ref:- https://flowbite.com/docs/forms/input-field/#input-fields
 @Component({
   selector: 'app-user-info',
@@ -32,7 +33,7 @@ import { FormsModule } from '@angular/forms';
           pattern="^[a-zA-Z0-9]+$"
           minlength="4"
           maxlength="16"
-          [(ngModel)]="username"
+          [(ngModel)]="user.username"
           name="username"
         />
       </div>
@@ -77,22 +78,18 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class UserInfoComponent {
-  @Output() onUserInfoSubmittedEvent = new EventEmitter<any>();
+  @Output() onUserInfoSubmittedEvent = new EventEmitter<IUser>();
 
-  username: string = '';
   profileImgFile?: File;
-  profileImg: any;
+  user: IUser = createIUser('', null);
 
   onClickSubmit = () => {
     if (this.profileImgFile) {
       const reader = new FileReader();
       reader.onload = ($event: any) => {
-        this.profileImg = $event.target.result;
+        this.user.profileImg = $event.target.result;
         // update parent
-        this.onUserInfoSubmittedEvent.next({
-          username: this.username,
-          profile: this.profileImg,
-        });
+        this.onUserInfoSubmittedEvent.next(this.user);
       };
       reader.readAsDataURL(this.profileImgFile);
     }

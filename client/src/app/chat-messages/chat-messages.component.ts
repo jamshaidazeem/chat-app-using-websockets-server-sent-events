@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Input, DoCheck } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
+import { IMessage } from '../models/message';
 
 @Component({
   selector: 'app-chat-messages',
@@ -9,10 +10,7 @@ import { ChatMessageComponent } from '../chat-message/chat-message.component';
   template: `
     <app-chat-message
       *ngFor="let item of messages"
-      [name]="item.name"
-      [content]="item.content"
-      [profile]="item.profile"
-      [dateTime]="item.dateTime"
+      [message]="item"
     ></app-chat-message>
     <p
       *ngIf="messages.length === 0"
@@ -30,7 +28,7 @@ import { ChatMessageComponent } from '../chat-message/chat-message.component';
   ],
 })
 export class ChatMessagesComponent implements DoCheck {
-  @Input() messages: any[] = [];
+  @Input() messages: IMessage[] = [];
 
   private _messagesCount = 0;
 

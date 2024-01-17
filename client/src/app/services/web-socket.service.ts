@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { webSocket } from 'rxjs/webSocket';
+import { IMessage } from '../models/message';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class WebSocketService {
 
   constructor() {}
 
-  public sendMessageToWebSocketServer(message: any) {
+  public sendMessageToWebSocketServer(message: IMessage) {
     this.webSocketSubject.next(JSON.stringify(message));
   }
 }

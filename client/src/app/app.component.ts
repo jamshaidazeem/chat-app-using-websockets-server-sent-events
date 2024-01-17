@@ -9,9 +9,10 @@ import { ChatMessagesComponent } from './chat-messages/chat-messages.component';
 import { ChatSendComponent } from './chat-send/chat-send.component';
 import { initFlowbite } from 'flowbite';
 import { catchError, retry, throwError } from 'rxjs';
-import { WebSocketService } from './web-socket.service';
+import { WebSocketService } from './services/web-socket.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
-
+import { IMessage, createIMessage } from './models/message';
+import { IUser, createIUser } from './models/user';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -31,12 +32,12 @@ export class AppComponent implements OnInit {
   title = 'client';
   showUserInfoForm: boolean = true;
 
-  userInfo: any = { username: '', profileImg: null };
+  userInfo: IUser = createIUser('', null);
   notificationCount: number = 5;
 
   messageDate = new Date().toUTCString();
 
-  messages: any[] = [];
+  messages: IMessage[] = [];
 
   constructor(
     private webSocketService: WebSocketService,
@@ -60,13 +61,9 @@ export class AppComponent implements OnInit {
     initFlowbite();
   }
 
-  onUserInfoSubmitted(event: any) {
-    this.userInfo = event;
+  onUserInfoSubmitted(user: IUser) {
+    this.userInfo = user;
     this.showUserInfoForm = false;
-  }
-
-  get sentMessageDate() {
-    return new Date().toUTCString();
   }
 
   get browserName() {
@@ -74,12 +71,11 @@ export class AppComponent implements OnInit {
   }
 
   onChatMessageSubmitted(message: string) {
-    const messageBody = {
-      name: this.userInfo.username,
-      dateTime: this.sentMessageDate,
-      content: message,
-      profile: `assets/chat-avatar-${this.browserName}.jpg`,
-    };
-    this.webSocketService.sendMessageToWebSocketServer(messageBody);
+    const newMessage = createIMessage(
+      this.userInfo.username,
+      message,
+      `assets/chat-avatar-${this.browserName}.jpg`
+    );
+    this.webSocketService.sendMessageToWebSocketServer(newMessage);
   }
 }
