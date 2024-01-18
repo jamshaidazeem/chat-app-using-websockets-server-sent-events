@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
@@ -13,6 +13,9 @@ import { WebSocketService } from './services/web-socket.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { IMessage, createIMessage } from './models/message';
 import { IUser, createIUser } from './models/user';
+import { WebNotificationService } from './services/web-notification.service';
+import { NotificationPermissionAlertComponent } from './notification-permission-alert/notification-permission-alert.component';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -24,24 +27,26 @@ import { IUser, createIUser } from './models/user';
     ChatHeaderComponent,
     ChatMessagesComponent,
     ChatSendComponent,
+    NotificationPermissionAlertComponent,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'client';
   showUserInfoForm: boolean = true;
 
   userInfo: IUser = createIUser('', null);
   notificationCount: number = 0;
 
-  messageDate = new Date().toUTCString();
-
   messages: IMessage[] = [];
+
+  showNotificationPermissionAlert: boolean = false;
 
   constructor(
     private webSocketService: WebSocketService,
-    private deviceService: DeviceDetectorService
+    private deviceService: DeviceDetectorService,
+    private webNotificationService: WebNotificationService
   ) {
     // subscribe to messages
     this.webSocketService.webSocket$
@@ -70,6 +75,23 @@ export class AppComponent implements OnInit {
     initFlowbite();
   }
 
+  ngAfterViewInit(): void {
+    // on load check if app has yet asked the user for notifications permission, if not than show alert for consent
+    if (!this.webNotificationService.areNotificationsPermissionRequested) {
+      setTimeout(() => {
+        this.showNotificationPermissionAlert = true;
+      });
+    }
+  }
+
+  onUserRespondToAskForPermissionEvent(granted: boolean) {
+    // user response to permission alert consent, move on with browser api for permission consent
+    this.showNotificationPermissionAlert = false;
+    if (granted) {
+      this.webNotificationService.askNotificationPermission();
+    }
+  }
+
   onUserInfoSubmitted(user: IUser) {
     this.userInfo = user;
     this.showUserInfoForm = false;
@@ -92,16 +114,15 @@ export class AppComponent implements OnInit {
     this.webSocketService.sendMessageToWebSocketServer(newMessage);
   }
 
+  onMessageOnScreenEventFired(message: IMessage) {
+    message.isRead = true;
+    this.updateNotificationCount();
+  }
+
   updateNotificationCount() {
     const unReadMessages = this.messages.filter(
       (msg: IMessage) => msg.isRead === false
     );
-
     this.notificationCount = unReadMessages.length;
-  }
-
-  onMessageOnScreenEventFired(message: IMessage) {
-    message.isRead = true;
-    this.updateNotificationCount();
   }
 }
