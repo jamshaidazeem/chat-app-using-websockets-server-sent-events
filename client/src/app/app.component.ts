@@ -65,7 +65,15 @@ export class AppComponent implements OnInit, AfterViewInit {
         ) {
           // message sent by same user, marked as read
           messageFromServer.isRead = true;
+        } else {
+          // show notification
+          this.webNotificationService.showChatNotification(
+            messageFromServer.name,
+            messageFromServer.content,
+            messageFromServer.profile
+          );
         }
+
         this.messages.push(messageFromServer);
         this.updateNotificationCount();
       });
@@ -79,6 +87,7 @@ export class AppComponent implements OnInit, AfterViewInit {
     // on load check if app has yet asked the user for notifications permission, if not than show alert for consent
     if (!this.webNotificationService.areNotificationsPermissionRequested) {
       setTimeout(() => {
+        // to handle `ExpressionChangedAfterItHasBeenCheckedError`
         this.showNotificationPermissionAlert = true;
       });
     }

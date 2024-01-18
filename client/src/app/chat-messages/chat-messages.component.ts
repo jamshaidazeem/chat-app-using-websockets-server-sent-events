@@ -26,7 +26,7 @@ import { ObserveVisibilityDirective } from '../directives/observe-visibility.dir
     </ng-container>
     <p
       *ngIf="messages.length === 0"
-      class="w-full mt-[50%] text-sm text-center font-normal text-gray-900 dark:text-white"
+      class="w-full mt-[20%] text-sm text-center font-normal text-gray-900 dark:text-white"
     >
       No Messages!
     </p>

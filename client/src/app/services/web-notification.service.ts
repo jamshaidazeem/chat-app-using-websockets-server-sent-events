@@ -26,4 +26,12 @@ export class WebNotificationService {
   get areNotificationsPermissionGranted() {
     return Notification.permission === 'granted' ? true : false;
   }
+
+  public showChatNotification(sender: string, message: string, icon: string) {
+    return new Notification(`${sender} sent a message`, {
+      body: message,
+      icon,
+      silent: false,
+    });
+  }
 }
