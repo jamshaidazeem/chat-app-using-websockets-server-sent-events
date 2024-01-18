@@ -16,16 +16,17 @@ import { ObserveVisibilityDirective } from '../directives/observe-visibility.dir
   standalone: true,
   imports: [CommonModule, ChatMessageComponent, ObserveVisibilityDirective],
   template: `
-    <app-chat-message
-      *ngFor="let item of messages"
-      [message]="item"
-      observeVisibility
-      [debounceTime]="1000"
-      (visible)="onMessageVisible(item)"
-    ></app-chat-message>
+    <ng-container *ngFor="let item of messages">
+      <app-chat-message
+        [message]="item"
+        observeVisibility
+        [debounceTime]="500"
+        (visible)="onMessageVisible(item)"
+      ></app-chat-message>
+    </ng-container>
     <p
       *ngIf="messages.length === 0"
-      class="w-full text-sm text-center font-normal text-gray-900 dark:text-white"
+      class="w-full mt-[50%] text-sm text-center font-normal text-gray-900 dark:text-white"
     >
       No Messages!
     </p>
@@ -33,7 +34,7 @@ import { ObserveVisibilityDirective } from '../directives/observe-visibility.dir
   styles: [
     `
       :host {
-        @apply flex flex-col w-full justify-center items-start h-96 overflow-scroll pt-4 pb-4;
+        @apply flex flex-col w-full justify-start items-start h-96 overflow-scroll pt-4 pb-4;
       }
     `,
   ],

@@ -52,8 +52,16 @@ export class AppComponent implements OnInit {
         retry({ delay: 5_000 }),
         takeUntilDestroyed()
       )
-      .subscribe((value: any) => {
-        this.messages.push(JSON.parse(value));
+      .subscribe((payloadFromServer: string) => {
+        const messageFromServer: IMessage = JSON.parse(payloadFromServer);
+        if (
+          messageFromServer.profile ===
+          this.messageProfileFromLocalAssetsBasedOnBrowser
+        ) {
+          // message sent by same user, marked as read
+          messageFromServer.isRead = true;
+        }
+        this.messages.push(messageFromServer);
         this.updateNotificationCount();
       });
   }
@@ -71,11 +79,15 @@ export class AppComponent implements OnInit {
     return this.deviceService.browser.toLowerCase();
   }
 
+  get messageProfileFromLocalAssetsBasedOnBrowser() {
+    return `assets/chat-avatar-${this.browserName}.jpg`;
+  }
+
   onChatMessageSubmitted(message: string) {
     const newMessage = createIMessage(
       this.userInfo.username,
       message,
-      `assets/chat-avatar-${this.browserName}.jpg`
+      this.messageProfileFromLocalAssetsBasedOnBrowser
     );
     this.webSocketService.sendMessageToWebSocketServer(newMessage);
   }
