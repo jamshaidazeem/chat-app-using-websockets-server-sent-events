@@ -56,5 +56,6 @@ export class ChatSendComponent {
 
   onSendMessageClicked() {
     this.onSendMessageEvent.next(this.message);
+    this.message = '';
   }
 }

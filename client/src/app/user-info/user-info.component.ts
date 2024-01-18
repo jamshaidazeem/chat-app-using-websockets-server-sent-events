@@ -39,7 +39,7 @@ import { IUser, createIUser } from '../models/user';
       </div>
       <div>
         <label class="user-info-input-label mb-2" for="file_input"
-          >Upload avatar</label
+          >Choose avatar</label
         >
         <input
           class="user-info-input-upload mb-8"

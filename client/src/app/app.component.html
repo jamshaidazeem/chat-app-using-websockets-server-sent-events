@@ -22,6 +22,7 @@
         chatMessages
         [messages]="messages"
         class="hide-scrollbar"
+        (messageOnScreenEvent)="onMessageOnScreenEventFired($event)"
       ></app-chat-messages>
 
       <app-chat-send

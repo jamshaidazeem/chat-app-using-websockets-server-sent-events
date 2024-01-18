@@ -1,9 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+
 // ref:- https://flowbite.com/docs/components/badge/#notification-badge
 @Component({
   selector: 'app-chat-notification',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   template: `
     <button
       type="button"
@@ -25,6 +27,7 @@ import { Component, Input } from '@angular/core';
       </svg>
       <span class="sr-only">Notifications</span>
       <div
+        *ngIf="count"
         class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900"
       >
         {{ count }}

@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
   showUserInfoForm: boolean = true;
 
   userInfo: IUser = createIUser('', null);
-  notificationCount: number = 5;
+  notificationCount: number = 0;
 
   messageDate = new Date().toUTCString();
 
@@ -54,6 +54,7 @@ export class AppComponent implements OnInit {
       )
       .subscribe((value: any) => {
         this.messages.push(JSON.parse(value));
+        this.updateNotificationCount();
       });
   }
 
@@ -77,5 +78,18 @@ export class AppComponent implements OnInit {
       `assets/chat-avatar-${this.browserName}.jpg`
     );
     this.webSocketService.sendMessageToWebSocketServer(newMessage);
+  }
+
+  updateNotificationCount() {
+    const unReadMessages = this.messages.filter(
+      (msg: IMessage) => msg.isRead === false
+    );
+
+    this.notificationCount = unReadMessages.length;
+  }
+
+  onMessageOnScreenEventFired(message: IMessage) {
+    message.isRead = true;
+    this.updateNotificationCount();
   }
 }
