@@ -23,7 +23,7 @@ To set node version for the server and client, run `nvm use` in both the server 
 
 Run `npm install` in both the server and client directories.
 
-To initiate the server, execute `npm run start` within the server directory.
+To initiate the server, execute `npm run start-socket-server` within the server directory.
 
 To launch the client, execute `ng serve` within the client directory.
 
